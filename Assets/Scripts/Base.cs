@@ -2,9 +2,8 @@ using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
 
-public class Base : MonoBehaviour
+public class Base : UnitManager
 {
-    [SerializeField] private Unit[] _units;
     [SerializeField] private Transform _oreContainer;
 
     private List<Ore> _toMine = new List<Ore>();
@@ -48,12 +47,6 @@ public class Base : MonoBehaviour
             ore = activeOres[Random.Range(0, activeOres.Length)];
 
         return ore != null;
-    }
-
-    private bool TryGetUnit(out Unit unit)
-    {
-        unit = _units.FirstOrDefault(u => u.IsFree);
-        return unit != null;
     }
 
     private void GetOrePool(Transform container)

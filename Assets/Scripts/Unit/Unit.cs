@@ -14,7 +14,7 @@ public class Unit : MonoBehaviour
 
     private void Start()
     {
-        _base = FindObjectOfType<Base>();
+        _base = transform.GetComponentInParent<Base>();
 
         _stateMachine = new UnitStateMachine();
         _stateMachine.Initialize(_idleState);

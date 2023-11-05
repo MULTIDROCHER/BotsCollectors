@@ -25,7 +25,10 @@ public class MiningState : State
 
     private Tween GoToOre()
     {
-        return _unit.transform.DOMove(_ore.transform.position, _unit.Duration, false);
+        float distance = Vector3.Distance(_unit.transform.position, _ore.transform.position);
+        float duration = distance / _unit.Speed;
+
+        return _unit.transform.DOMove(_ore.transform.position, duration, false);
     }
 
     private void TakeOre()

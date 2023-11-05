@@ -3,14 +3,14 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     private Base _base;
-    private float _duration = 3;
+    private float _speed = 2;
     private bool _isFree = true;
 
     private UnitStateMachine _stateMachine;
     private IdleState _idleState = new IdleState();
 
     public bool IsFree => _isFree;
-    public float Duration => _duration;
+    public float Speed => _speed;
 
     private void Start()
     {

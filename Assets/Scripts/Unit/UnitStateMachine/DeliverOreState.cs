@@ -27,7 +27,10 @@ public class DeliverOreState : State
 
     private Tween GoToBase()
     {
-        return _unit.transform.DOMove(BasePosition(), _unit.Duration, false);
+        float distance = Vector3.Distance(_unit.transform.position, _base.transform.position);
+        float duration = distance / _unit.Speed;
+
+        return _unit.transform.DOMove(BasePosition(), duration, false);
     }
 
     private void GiveOre()

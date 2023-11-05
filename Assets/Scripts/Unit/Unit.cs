@@ -1,29 +1,45 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    private Base _base;
+    private float _duration = 3;
     private bool _isFree = true;
+
     private UnitStateMachine _stateMachine;
+    private IdleState _idleState = new IdleState();
 
     public bool IsFree => _isFree;
+    public float Duration => _duration;
 
     private void Start()
     {
+        _base = FindObjectOfType<Base>();
+
         _stateMachine = new UnitStateMachine();
-        _stateMachine.Initialize(new IdleState());
+        _stateMachine.Initialize(_idleState);
     }
 
-    public void GoToOre(Ore ore)
+    public void Mine(Ore ore)
     {
         _isFree = false;
-        TakeOreState goToOre = new TakeOreState(this, ore.transform.position);
-        
-        _stateMachine.ChangeState(goToOre);
+        MiningState mining = new MiningState(this, ore);
+
+        _stateMachine.ChangeState(mining);
+        mining.OreMined += OnOreMined;
     }
 
-    public void GoToBase(){
+    private void OnOreMined(Ore ore)
+    {
+        DeliverOreState delivering = new DeliverOreState(this, ore, _base);
+
+        _stateMachine.ChangeState(delivering);
+        delivering.OreDelivered += GoToIdle;
+    }
+
+    private void GoToIdle()
+    {
         _isFree = true;
+        _stateMachine.ChangeState(_idleState);
     }
 }

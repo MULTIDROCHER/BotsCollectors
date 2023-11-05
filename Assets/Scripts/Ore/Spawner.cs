@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Spawner : OrePool
@@ -10,7 +9,7 @@ public class Spawner : OrePool
 
     private WaitForSeconds _waitForSeconds;
 
-    private void Start()
+    private void Awake()
     {
         Initialize(_prefab);
         _waitForSeconds = new WaitForSeconds(_spawnRate);

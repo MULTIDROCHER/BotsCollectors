@@ -1,8 +1,10 @@
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
     private Base _base;
+    private Flag _flag;
     private float _speed = 2;
     private bool _isFree = true;
 
@@ -11,6 +13,7 @@ public class Unit : MonoBehaviour
 
     public bool IsFree => _isFree;
     public float Speed => _speed;
+    public Flag Flag => _flag;
 
     private void Start()
     {
@@ -23,7 +26,7 @@ public class Unit : MonoBehaviour
     public void Mine(Ore ore)
     {
         _isFree = false;
-        MiningState mining = new MiningState(this, ore);
+        var mining = new MiningState(this, ore);
 
         _stateMachine.ChangeState(mining);
         mining.OreMined += OnOreMined;
@@ -31,15 +34,31 @@ public class Unit : MonoBehaviour
 
     private void OnOreMined(Ore ore)
     {
-        DeliverOreState delivering = new DeliverOreState(this, ore, _base);
+        var delivering = new DeliverOreState(this, ore, _base);
 
         _stateMachine.ChangeState(delivering);
         delivering.OreDelivered += GoToIdle;
+    }
+
+    public void OpenBase(Flag flag)
+    {
+        _isFree = false;
+        _flag = flag;
+        var openBase = new OpenBaseState(this, flag);
+
+        _stateMachine.ChangeState(openBase);
+        openBase.BaseOpened += SetBase;
     }
 
     private void GoToIdle()
     {
         _isFree = true;
         _stateMachine.ChangeState(_idleState);
+    }
+
+    private void SetBase(Base newBase)
+    {
+        _base = newBase;
+        GoToIdle();
     }
 }

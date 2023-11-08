@@ -9,12 +9,10 @@ public class ResourceCounter : MonoBehaviour
     private float _duration = 1;
     private int _count;
 
-    public int Count => _count;
-
     public void AddResource()
     {
         _count++;
-        _text.DOText(_count.ToString(), _duration, true, ScrambleMode.All);
+        ShowCount();
     }
 
     public bool TryBuy(int price)
@@ -22,6 +20,7 @@ public class ResourceCounter : MonoBehaviour
         if (_count >= price)
         {
             _count -= price;
+            ShowCount();
             return true;
         }
         else
@@ -29,5 +28,10 @@ public class ResourceCounter : MonoBehaviour
             Debug.Log("not enaugh resources");
             return false;
         }
+    }
+
+    private void ShowCount()
+    {
+        _text.DOText(_count.ToString(), _duration, true, ScrambleMode.All);
     }
 }

@@ -1,49 +1,71 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Events;
 
+[RequireComponent(typeof(ResourceCounter))]
 public class BaseBuilder : MonoBehaviour
 {
-    [SerializeField] private Base _baseTemplate;
     [SerializeField] private Flag _flagTemplate;
-    [SerializeField] private Text _resourceText;
+    [SerializeField] private ResourceCounter _resourceCounter;
 
-    protected Ground Ground;
-    protected Vector3 MousePosition;
+    protected Camera Camera;
+    protected RaycastHit Hit;
 
-    private TextContainer _textContainer;
-    private Flag _flagInstance;
-    private Camera _camera;
+    private Flag _flag;
+    private int _basePrice = 5;
+
+    public Flag Flag => _flag;
+
+    public UnityAction StartBuildBase;
 
     private void Awake()
     {
-        Ground = FindObjectOfType<Ground>();
-        _textContainer = FindObjectOfType<TextContainer>();
-        _camera = Camera.main;
-    }
-
-    private void Update()
-    {
-        MousePosition = _camera.ScreenToWorldPoint(Input.mousePosition);
-        MousePosition.z = _camera.transform.position.y;
+        Camera = Camera.main;
     }
 
     private void OnMouseDown()
     {
-        if (_flagInstance != null)
+        if (GetHit(out Hit).TryGetComponent(out Base currentBase))
         {
-            Debug.LogError("this base already has flag");
-            return;
+            if (_flag == null)
+                CreateFlag(Hit.point);
+            else
+                MoveFlag(Hit.point);
         }
-
-        SetFlag();
     }
 
-    private void SetFlag()
+    protected Collider GetHit(out RaycastHit hit)
     {
-        _flagInstance = Instantiate(_flagTemplate, MousePosition, Quaternion.identity);
-        _flagInstance.GetComponent<Renderer>().material.color = new Color(1, 1, 1, .5f);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit))
+            return hit.collider;
+        else
+            return null;
+    }
+
+    private void OnFlagPlaced(Flag flag)
+    {
+        if (_resourceCounter.TryBuy(_basePrice)){
+            GetComponent<Base>().isFlag = true;
+            StartBuildBase?.Invoke();
+        }
+    }
+
+    private void CreateFlag(Vector3 position)
+    {
+        _flag = Instantiate(_flagTemplate);
+        MoveFlag(position);
+    }
+
+    private void MoveFlag(Vector3 position)
+    {
+        _flag.transform.position = position;
+        _flag.Moving?.Invoke();
+        _flag.FlagPlaced += OnFlagPlaced;
     }
 }

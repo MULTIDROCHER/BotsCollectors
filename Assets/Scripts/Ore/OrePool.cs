@@ -4,7 +4,7 @@ using System.Linq;
 
 public class OrePool : MonoBehaviour
 {
-    [SerializeField] private Transform _container;
+    [SerializeField] private OreContainer _container;
     [SerializeField] private int _capacity;
 
     private List<Ore> _pool = new List<Ore>();
@@ -13,7 +13,7 @@ public class OrePool : MonoBehaviour
     {
         for (int i = 0; i < _capacity; i++)
         {
-            var spawned = Instantiate(ore, _container);
+            var spawned = Instantiate(ore, _container.transform);
             spawned.gameObject.SetActive(false);
 
             _pool.Add(spawned);

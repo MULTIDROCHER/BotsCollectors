@@ -53,7 +53,7 @@ public class Flag : BaseBuilder
     private void StopMoving(Vector3 position)
     {
         _isMoving = false;
-        transform.position = position;
+        transform.position = MakeOffset(position);
         FlagPlaced?.Invoke(this);
     }
 

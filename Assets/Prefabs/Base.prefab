@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 7793641653495698871}
   - component: {fileID: 8524224462233527086}
   - component: {fileID: 1801879674558828478}
-  - component: {fileID: 7883057946784037912}
+  - component: {fileID: 3360925758280501957}
+  - component: {fileID: 6403925383536084168}
   m_Layer: 0
   m_Name: Base
   m_TagString: Untagged
@@ -31,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 4895736322227921841}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.07, y: 0.06, z: -7.31}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -120,12 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 636e83dbaccc8cc439f3c05206ee869b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _units:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _template: {fileID: 0}
-  _oreContainer: {fileID: 0}
   isFlag: 0
 --- !u!114 &1801879674558828478
 MonoBehaviour:
@@ -140,7 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _text: {fileID: 0}
---- !u!114 &7883057946784037912
+--- !u!114 &3360925758280501957
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,8 +144,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 4895736322227921841}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f0e8666fdfce4343b9c70bd69820feb, type: 3}
+  m_Script: {fileID: 11500000, guid: f101ef8d6611aac43a15244eb1f911ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flagTemplate: {fileID: -3557792179291776128, guid: 8392d91f24378834aac6caaab8dbfd3f, type: 3}
-  _resourceCounter: {fileID: 1801879674558828478}
+--- !u!114 &6403925383536084168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4895736322227921841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae679b9b2b83e994085b2b6ed99c2ebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _template: {fileID: -4503711428572089654, guid: d2ad077bd0cee9443b9a914b88ffe681, type: 3}

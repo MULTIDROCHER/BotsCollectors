@@ -1,5 +1,6 @@
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Unit : MonoBehaviour
 {
@@ -37,6 +38,7 @@ public class Unit : MonoBehaviour
         var delivering = new DeliverOreState(this, ore, _base);
 
         _stateMachine.ChangeState(delivering);
+        _base.OnOreDelivered(ore);
         delivering.OreDelivered += GoToIdle;
     }
 
@@ -53,6 +55,7 @@ public class Unit : MonoBehaviour
     private void GoToIdle()
     {
         _isFree = true;
+
         _stateMachine.ChangeState(_idleState);
     }
 

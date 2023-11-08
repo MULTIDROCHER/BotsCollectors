@@ -50,7 +50,8 @@ public class BaseBuilder : MonoBehaviour
 
     private void OnFlagPlaced(Flag flag)
     {
-        if (_resourceCounter.TryBuy(_basePrice)){
+        if (_resourceCounter.TryBuy(_basePrice))
+        {
             GetComponent<Base>().isFlag = true;
             StartBuildBase?.Invoke();
         }
@@ -64,8 +65,14 @@ public class BaseBuilder : MonoBehaviour
 
     private void MoveFlag(Vector3 position)
     {
-        _flag.transform.position = position;
+        _flag.transform.position = MakeOffset(position);
         _flag.Moving?.Invoke();
         _flag.FlagPlaced += OnFlagPlaced;
+    }
+
+    protected Vector3 MakeOffset(Vector3 position)
+    {
+        float offset = .5f;
+        return new Vector3(position.x, position.y - offset, position.z);
     }
 }

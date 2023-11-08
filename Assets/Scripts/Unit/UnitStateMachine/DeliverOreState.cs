@@ -37,7 +37,6 @@ public class DeliverOreState : State
     {
         _base.TryGetComponent(out ResourceCounter counter);
         counter.AddResource();
-        _base.ResetOre(_ore);
         OreDelivered?.Invoke();
     }
 

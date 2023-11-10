@@ -154,8 +154,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _flagTemplate: {fileID: -3557792179291776128}
-  _resourceCounter: {fileID: 1718218930947009924}
-  _baseTemplate: {fileID: 8524224462233527086, guid: dc65a76f066843647a68ce627fa0aeb9, type: 3}
 --- !u!114 &1718218930947009924
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -18,9 +18,10 @@ public class UnitManager : MonoBehaviour
         _units.AddRange(GetComponentsInChildren<Unit>());
     }
 
-    private void OnMouseDown()
+    private void Update()
     {
-        if (Input.GetMouseButton(1) && _counter.TryBuy(_unitPrice))
+        if (Input.GetMouseButtonUp(1)
+        && _counter.TryBuy(_unitPrice))
             SpawnUnit();
     }
 
@@ -32,11 +33,10 @@ public class UnitManager : MonoBehaviour
 
     private void SpawnUnit()
     {
-        /* float spawnPositionY = 0.4f;
-        Vector3 spawnPoin = new Vector3(transform.position.x, spawnPositionY, transform.position.z); */
+        float scaleY = 3;
 
-        var spawned = Instantiate(_template, transform.position, Quaternion.identity);
-        spawned.transform.SetParent(this.transform);
+        var spawned = Instantiate(_template, transform.position, Quaternion.identity, transform);
+        spawned.transform.localScale = new Vector3(spawned.transform.localScale.x, scaleY, spawned.transform.localScale.z);
         _units.Add(spawned);
     }
 }

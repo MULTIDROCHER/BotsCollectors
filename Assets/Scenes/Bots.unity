@@ -1504,7 +1504,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _container: {fileID: 1926967499}
-  _capacity: 17
+  _capacity: 25
   _spawnPoints:
   - {fileID: 1142321008}
   - {fileID: 1729699569}
@@ -1526,7 +1526,7 @@ MonoBehaviour:
   - {fileID: 1480223598}
   - {fileID: 598126891}
   _prefab: {fileID: 2679204265177194347, guid: e063c641b04e00c46880fd3adf24b959, type: 3}
-  _spawnRate: 2
+  _spawnRate: 0.5
 --- !u!4 &2125141508
 Transform:
   m_ObjectHideFlags: 0

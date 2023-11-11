@@ -34,7 +34,7 @@ public class OpenBaseState : State
 
     private void GetBase()
     {
-        //_base = _flag.Base;
+        _base = _flag.Base;
         _unit.transform.parent = _base.transform;
         BaseOpened?.Invoke(_base);
     }

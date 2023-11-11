@@ -1,24 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
 
-public class Flag : MonoBehaviour
+public class Flag : InHitSpawner
 {
-    [SerializeField] private Base _baseTemplate;
-
     private bool _isMoving = true;
-    private Collider _groundCollider;
-
-    //public Base NewBase { get; private set; }
+    private Base _newBase;
 
     public UnityAction<Flag> FlagPlaced;
 
-    private void Awake()
-    {
-        //_groundCollider = FindObjectOfType<Ground>().GetComponent<Collider>();
-    }
+    public Base Base => _newBase;
 
     private void Update()
     {
@@ -26,39 +17,31 @@ public class Flag : MonoBehaviour
             Move();
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void GetBase(Base spawned) => _newBase = spawned; 
+
+    public void Replase(Vector3 position)
     {
-        if (other.TryGetComponent(out Unit unit) && unit.Flag == this)
-        {
-            Debug.Log("unit is here" + unit.Flag.name);
-            BuildNewBase();
-        }
+        transform.position = position;
+        _isMoving = true;
     }
 
     private void Move()
     {
         float speed = 15;
         _isMoving = true;
-        RaycastHit hit;
 
+        if (GetHit(out RaycastHit hit) != null
+        && hit.collider.TryGetComponent(out Ground ground))
+            transform.DOMove(hit.point, speed * Time.deltaTime);
 
-        //f (GetHit(out hit) != null && hit.collider == _groundCollider)
-            //transform.DOMove(hit.point, speed * Time.deltaTime);
-
-        //if (Input.GetMouseButtonDown(1))
-            //StopMoving(hit.point);
+        if (Input.GetMouseButtonDown(1))
+            StopMoving(hit.point);
     }
 
     private void StopMoving(Vector3 position)
     {
         _isMoving = false;
-       //transform.position = MakeOffset(position);
-        FlagPlaced?.Invoke(this);
-    }
 
-    public void BuildNewBase()
-    {
-        //NewBase = Instantiate(_baseTemplate, transform.position, Quaternion.identity);
-        Destroy(gameObject);
+        FlagPlaced?.Invoke(this);
     }
 }

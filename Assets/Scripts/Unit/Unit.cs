@@ -1,6 +1,4 @@
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Unit : MonoBehaviour
 {
@@ -16,9 +14,9 @@ public class Unit : MonoBehaviour
     public float Speed => _speed;
     public Flag Flag => _flag;
 
-    private void Start()
+    private void Awake()
     {
-        _base = transform.GetComponentInParent<Base>();
+        transform.parent.TryGetComponent(out _base);
 
         _stateMachine = new UnitStateMachine();
         _stateMachine.Initialize(_idleState);
@@ -38,7 +36,6 @@ public class Unit : MonoBehaviour
         var delivering = new DeliverOreState(this, ore, _base);
 
         _stateMachine.ChangeState(delivering);
-        _base.OnOreDelivered(ore);
         delivering.OreDelivered += GoToIdle;
     }
 

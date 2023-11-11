@@ -36,8 +36,9 @@ public class DeliverOreState : State
     private void GiveOre()
     {
         _base.TryGetComponent(out ResourceCounter counter);
-        counter.AddResource();
+        _base.OnOreDelivered(_ore);
         OreDelivered?.Invoke();
+        counter.AddResource();
     }
 
     private Vector3 BasePosition()

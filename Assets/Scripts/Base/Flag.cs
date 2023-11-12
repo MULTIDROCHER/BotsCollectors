@@ -19,7 +19,7 @@ public class Flag : InHitSpawner
 
     public void GetBase(Base spawned) => _newBase = spawned; 
 
-    public void Replase(Vector3 position)
+    public void Replace(Vector3 position)
     {
         transform.position = position;
         _isMoving = true;
@@ -35,13 +35,12 @@ public class Flag : InHitSpawner
             transform.DOMove(hit.point, speed * Time.deltaTime);
 
         if (Input.GetMouseButtonDown(1))
-            StopMoving(hit.point);
+            StopMoving();
     }
 
-    private void StopMoving(Vector3 position)
+    private void StopMoving()
     {
         _isMoving = false;
-
         FlagPlaced?.Invoke(this);
     }
 }

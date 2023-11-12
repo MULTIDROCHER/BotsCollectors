@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(ResourceCounter))]
 public class FlagSpawner : InHitSpawner
@@ -6,27 +8,22 @@ public class FlagSpawner : InHitSpawner
     [SerializeField] private Flag _flagTemplate;
 
     private ResourceCounter _counter;
-    private Base _currentBase;
+    private int _basePrice = 5;
+
+    public UnityAction<Flag> AbleToBuildBase;
 
     public Flag Flag { get; private set; }
 
     private void Awake()
     {
         TryGetComponent(out _counter);
-        TryGetComponent(out _currentBase);
-    }
-
-    private void Update()
-    {
-        if (Flag != null)
-            OnFlagSpawned(Flag);
     }
 
     private void OnMouseDown()
     {
         if (GetHit(out RaycastHit hit))
             if (Flag != null)
-                Flag.Replase(hit.point);
+                Flag.Replace(hit.point);
             else
                 SpawnFlag(hit.point);
     }
@@ -35,12 +32,27 @@ public class FlagSpawner : InHitSpawner
     {
         Flag = Instantiate(_flagTemplate, position, Quaternion.identity);
 
-        //Flag.FlagPlaced += OnFlagSpawned;
+        Flag.FlagPlaced += OnFlagPlaced;
     }
 
-    private void OnFlagSpawned(Flag flag)
+    private void OnFlagPlaced(Flag flag)
     {
-        if (_counter.TryBuy(5))
-            _currentBase.SendUnitToOpenBase(flag);
+        StartCoroutine(WaitForEnoughBalance(flag));
+    }
+
+    private IEnumerator WaitForEnoughBalance(Flag flag)
+    {
+        while (_counter.Count < _basePrice)
+            yield return null;
+
+        BuildBase(flag);
+    }
+
+    private void BuildBase(Flag flag)
+    {
+        if (_counter.TryBuy(_basePrice))
+            AbleToBuildBase?.Invoke(flag);
+
+        StopCoroutine(WaitForEnoughBalance(flag));
     }
 }

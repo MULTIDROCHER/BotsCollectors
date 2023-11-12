@@ -58,6 +58,7 @@ public class Unit : MonoBehaviour
 
     private void SetBase(Base newBase)
     {
+        _base.GetComponent<UnitManager>().RemoveUnit(this, newBase);
         _base = newBase;
         GoToIdle();
     }

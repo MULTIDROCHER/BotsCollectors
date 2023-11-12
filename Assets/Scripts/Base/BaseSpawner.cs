@@ -13,16 +13,13 @@ public class BaseSpawner : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Unit unit) && unit.Flag == _flag)
-        {
-            Debug.Log("unit is here" + unit.Flag.name);
+        if (other.TryGetComponent(out Unit unit) 
+        && unit.Flag == _flag)
             BuildNewBase();
-        }
     }
 
     private void BuildNewBase()
     {
-        Debug.Log("hitMNG");
         var newBase = Instantiate(_baseTemplate, transform.position, Quaternion.identity);
         _flag.GetBase(newBase);
         Destroy(gameObject);

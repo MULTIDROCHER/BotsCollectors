@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Base))]
 [RequireComponent(typeof(ResourceCounter))]
-public class UnitManager : MonoBehaviour
+public class UnitManager : InHitSpawner
 {
     [SerializeField] private Unit _template;
 
@@ -21,6 +21,7 @@ public class UnitManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetMouseButtonUp(1)
+        && GetHit(out RaycastHit hit) == GetComponent<Collider>()
         && _counter.TryBuy(_unitPrice))
             SpawnUnit();
     }
@@ -31,12 +32,27 @@ public class UnitManager : MonoBehaviour
         return unit != null;
     }
 
+    public void RemoveUnit(Unit unit, Base newBase)
+    {
+        if (_units.Contains(unit))
+        {
+            _units.Remove(unit);
+            newBase.TryGetComponent(out UnitManager manager);
+            manager.AddUnit(unit);
+        }
+    }
+
     private void SpawnUnit()
     {
         float scaleY = 3;
 
         var spawned = Instantiate(_template, transform.position, Quaternion.identity, transform);
         spawned.transform.localScale = new Vector3(spawned.transform.localScale.x, scaleY, spawned.transform.localScale.z);
-        _units.Add(spawned);
+        AddUnit(spawned);
+    }
+
+    private void AddUnit(Unit unit)
+    {
+        _units.Add(unit);
     }
 }

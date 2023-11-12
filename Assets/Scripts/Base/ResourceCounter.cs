@@ -1,37 +1,46 @@
 using UnityEngine;
-using UnityEngine.UI;
-using DG.Tweening;
 
 public class ResourceCounter : MonoBehaviour
 {
-    [SerializeField] private Text _text;
+    [SerializeField] private Sprite[] digitSprites;
+    [SerializeField] private SpriteRenderer[] digitImages;
 
-    private float _duration = 1;
     private int _count;
+
+    public int Count => _count;
 
     public void AddResource()
     {
         _count++;
-        ShowCount();
+        UpdateDigitSprites();
     }
-
+    
     public bool TryBuy(int price)
     {
         if (_count >= price)
         {
             _count -= price;
-            ShowCount();
+            UpdateDigitSprites();
             return true;
         }
         else
         {
-            Debug.Log("not enaugh resources");
+            Debug.Log("not enough resources");
             return false;
         }
     }
 
-    private void ShowCount()
+    private void UpdateDigitSprites()
     {
-        _text.DOText(_count.ToString(), _duration, true, ScrambleMode.All);
+        var countString = _count.ToString().PadLeft(digitImages.Length, '0');
+
+        for (int i = 0; i < digitImages.Length; i++)
+        {
+            char digitChar = countString[i];
+
+            int digit = int.Parse(digitChar.ToString());
+
+            digitImages[i].sprite = digitSprites[digit];
+        }
     }
 }
